@@ -47,5 +47,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Pato's config
 vim.keymap.set('n', '<C-y>', ':%y+<CR>', { desc = 'Yank the whole file' })
+vim.keymap.set('n', '<leader>t', ':tabnew | terminal<CR>', { noremap = true, silent = true })
 
 -- vim: ts=2 sts=2 sw=2 et
