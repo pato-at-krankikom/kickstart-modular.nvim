@@ -194,6 +194,19 @@ return {
             },
           },
         },
+        intelephense = {},
+        -- phpactor = {
+        --   init_options = {
+        --     ['language_server_phpstan.enabled'] = false,
+        --     ['language_server_psalm.enabled'] = false,
+        --     ['logging.enabled'] = true,
+        --     ['logging.path'] = '/tmp/phpactor.log',
+        --     ['logging.level'] = 'debug',
+        --   },
+        -- filetypes = { 'php' },
+        -- cmd = { 'phpactor', 'language-server' },
+        -- root_dir = require('lspconfig.util').root_pattern('composer.json', '.git'),
+        -- },
       }
 
       -- Ensure the servers and tools above are installed
@@ -216,6 +229,7 @@ return {
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
+            -- print('Setting up LSP server: ' .. server_name)
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
