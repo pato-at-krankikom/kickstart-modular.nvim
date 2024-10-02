@@ -3,7 +3,7 @@ return {
   event = 'VeryLazy',
   build = 'make',
   opts = {
-    provider = 'openai',
+    provider = 'claude',
     claude = {
       endpoint = os.getenv 'AVANTE_ANTHROPIC_ENDPOINT' or 'https://api.anthropic.com',
       model = 'claude-3-5-sonnet-20240620',
@@ -14,12 +14,21 @@ return {
     },
     openai = {
       endpoint = os.getenv 'AVANTE_OPENAI_ENDPOINT' or 'https://api.openai.com/v1', -- Set the correct endpoint for chat completions
+      -- model = 'gpt-4', -- Use GPT-4 model
       model = 'gpt-3.5-turbo', -- Use GPT-4 model:  gpt-4
       timeout = 30000, -- Timeout in milliseconds
       temperature = 0, -- Adjust the creativity level of responses
       max_tokens = 4096, -- Maximum number of tokens in the response
       ['local'] = false, -- Set to false if you want to use the OpenAI API
     },
+    -- huggingface = {
+    --   endpoint = os.getenv 'AVANTE_OPENAI_ENDPOINT' or 'https://api-inference.huggingface.co/models/codellama-7b-hf', -- Set the correct endpoint for chat completions
+    --   model = 'codellama-7b-hf', -- Use GPT-4 model:  gpt-4
+    --   timeout = 30000, -- Timeout in milliseconds
+    --   temperature = 0, -- Adjust the creativity level of responses
+    --   max_tokens = 4096, -- Maximum number of tokens in the response
+    --   ['local'] = false, -- Set to false if you want to use the OpenAI API
+    -- },
     behaviour = {
       auto_suggestions = false, -- Experimental stage
       auto_set_highlight_group = true,
