@@ -120,6 +120,14 @@ return {
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      vim.keymap.set('n', '<leader>sl', function()
+        require('telescope.builtin').find_files { cwd = vim.fn.expand '~/.local/share/nvim/' }
+      end, { desc = '[S]earch [L]ocal Neovim files' })
+
+      vim.keymap.set('n', '<leader>sp', function()
+        require('telescope.builtin').find_files { cwd = vim.fn.expand '~/kk/' }
+      end, { desc = '[S]earch files in KK [P]roject directory' })
     end,
   },
 }
