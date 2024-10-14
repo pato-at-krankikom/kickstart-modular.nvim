@@ -71,7 +71,17 @@ vim.api.nvim_create_autocmd('TermOpen', {
   end,
 })
 
+--
+-- Pato's configuration
+--
+
+-- vim.opt.expandtab = true
+-- vim.opt.tabstop = 4
+-- vim.opt.shiftwidth = 4
+-- vim.opt.softtabstop = 4
+
 vim.api.nvim_create_user_command('Json', '%!jq .', {})
 vim.api.nvim_create_user_command('ToJson', '%!jq .', {})
+vim.api.nvim_create_user_command('Mini', 'lua MiniFiles.open()', {})
 
 -- vim: ts=2 sts=2 sw=2 et
