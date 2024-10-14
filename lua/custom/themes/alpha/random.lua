@@ -31,6 +31,13 @@ local banners = {
     [[                         aa,    ,88                 d8'       ]],
     [[                          "Y8bbdP"                 d8'        ]],
     [[                                                              ]],
+    [[                                                              ]],
+    [[                                                              ]],
+    [[                         ,d88b.d88b,                          ]],
+    [[                         88888888888                          ]],
+    [[                         `Y8888888Y'                          ]],
+    [[                           `Y888Y'                            ]],
+    [[                             `Y'                              ]],
   },
   -- Add more named banners here
   doom = {

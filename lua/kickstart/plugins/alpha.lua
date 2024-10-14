@@ -12,6 +12,6 @@ return {
     alpha.setup(theme.config())
 
     -- Or for a specific banner
-    -- alpha.setup(random_theme.config('godzilla'))
+    -- alpha.setup(theme.config 'rugby_play')
   end,
 }
