@@ -49,4 +49,25 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.keymap.set('n', '<C-y>', ':%y+<CR>', { desc = 'Yank the whole file' })
 vim.keymap.set('n', '<leader>t', ':tabnew | terminal<CR>', { noremap = true, silent = true })
 
+-- For local replace
+-- https://stackoverflow.com/a/597932/2864517
+-- nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
+-- nnoremap gR gD:%s/<C-R>///gc<left><left><left>
+
+vim.keymap.set('n', '<leader>rs', function()
+  local word = vim.fn.expand '<cword>'
+  local replacement = vim.fn.input("Replace '" .. word .. "' with: ")
+  if replacement ~= '' then
+    vim.cmd('%s/\\<' .. word .. '\\>/' .. replacement .. '/gc') -- Global replace
+  end
+end, { desc = 'Replace word under cursor (Global with confirmation)' })
+
+vim.keymap.set('n', '<leader>rS', function()
+  local word = vim.fn.expand '<cword>'
+  local replacement = vim.fn.input("Replace '" .. word .. "' with: ")
+  if replacement ~= '' then
+    vim.cmd('.,/\\n/s/\\<' .. word .. '\\>/' .. replacement .. '/gc') -- Scope replace
+  end
+end, { desc = 'Replace word under cursor (Scope with confirmation)' })
+
 -- vim: ts=2 sts=2 sw=2 et
