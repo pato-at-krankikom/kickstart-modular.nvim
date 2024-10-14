@@ -180,6 +180,27 @@ return {
         -- ts_ls = {},
         --
 
+        docker_compose_language_service = {},
+
+        pyright = {
+          single_file_support = true,
+          settings = {
+            pyright = {
+              disableLanguageServices = false,
+              disableOrganizeImports = false,
+            },
+            python = {
+              analysis = {
+                autoImportCompletions = true,
+                useLibraryCodeForTypes = true,
+                typeCheckingMode = 'basic', -- off, basic, strict
+                diagnosticMode = 'workspce', -- openFilesOnly, workspace
+                autoSearchPaths = true,
+              },
+            },
+          },
+        },
+
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -194,19 +215,25 @@ return {
             },
           },
         },
-        intelephense = {},
-        -- phpactor = {
-        --   init_options = {
-        --     ['language_server_phpstan.enabled'] = false,
-        --     ['language_server_psalm.enabled'] = false,
-        --     ['logging.enabled'] = true,
-        --     ['logging.path'] = '/tmp/phpactor.log',
-        --     ['logging.level'] = 'debug',
-        --   },
-        -- filetypes = { 'php' },
-        -- cmd = { 'phpactor', 'language-server' },
-        -- root_dir = require('lspconfig.util').root_pattern('composer.json', '.git'),
-        -- },
+
+        intelephense = {
+          root_dir = function()
+            return vim.loop.cwd()
+          end,
+        },
+
+        phpactor = {
+          init_options = {
+            ['language_server_phpstan.enabled'] = false,
+            ['language_server_psalm.enabled'] = false,
+            ['logging.enabled'] = false,
+            ['logging.path'] = '/tmp/phpactor.log',
+            ['logging.level'] = 'debug',
+          },
+          filetypes = { 'php', 'phtml' },
+          cmd = { 'phpactor', 'language-server' },
+          root_dir = require('lspconfig.util').root_pattern('composer.json', '.git'),
+        },
       }
 
       -- Ensure the servers and tools above are installed
