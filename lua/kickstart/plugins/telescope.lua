@@ -64,13 +64,41 @@ return {
         -- pickers = {}
         pickers = {
           live_grep = {
-            file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+            file_ignore_patterns = {
+              'vendor',
+              'node_modules',
+              '.git',
+              '.venv',
+              '.composer',
+              '.vagrant.d',
+              '.openjfx',
+              '.cocoapods',
+              '.nvm',
+              '.cursor',
+              '.cache',
+              '.docker',
+              '.graddle',
+            },
             additional_args = function(_)
               return { '--hidden' }
             end,
           },
           find_files = {
-            file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+            file_ignore_patterns = {
+              'vendor',
+              'node_modules',
+              '.git',
+              '.venv',
+              '.composer',
+              '.vagrant.d',
+              '.openjfx',
+              '.cocoapods',
+              '.nvm',
+              '.cursor',
+              '.cache',
+              '.docker',
+              '.graddle',
+            },
             hidden = true,
           },
         },
@@ -128,6 +156,10 @@ return {
       vim.keymap.set('n', '<leader>sp', function()
         require('telescope.builtin').find_files { cwd = vim.fn.expand '~/kk/' }
       end, { desc = '[S]earch files in KK [P]roject directory' })
+
+      vim.keymap.set('n', '<leader>sz', function()
+        require('telescope.builtin').find_files { cwd = vim.fn.expand '~/.oh-my-zsh/custom/' }
+      end, { desc = '[S]earch Oh-My-[Z]shell files' })
     end,
   },
 }
