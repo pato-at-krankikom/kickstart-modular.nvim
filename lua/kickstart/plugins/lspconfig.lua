@@ -150,6 +150,8 @@ return {
         end,
       })
 
+      local util = require 'lspconfig.util'
+
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
@@ -201,6 +203,8 @@ return {
           },
         },
 
+        bashls = {},
+
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -232,8 +236,21 @@ return {
           },
           filetypes = { 'php', 'phtml' },
           cmd = { 'phpactor', 'language-server' },
-          root_dir = require('lspconfig.util').root_pattern('composer.json', '.git'),
+          -- root_dir = require('lspconfig.util').root_pattern('composer.json', '.git'),
+          root_dir = util.root_pattern('composer.json', '.git'),
         },
+
+        csharp_ls = {
+          cmd = { 'csharp-ls' },
+          root_dir = function(fname)
+            return util.root_pattern '*.sln'(fname) or util.root_pattern '*.csproj'(fname)
+          end,
+          filetypes = { 'cs' },
+          init_options = {
+            AutomaticWorkspaceInit = true,
+          },
+        },
+        csharpier = {},
       }
 
       -- Ensure the servers and tools above are installed
