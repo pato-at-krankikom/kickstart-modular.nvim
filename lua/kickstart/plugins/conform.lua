@@ -1,7 +1,7 @@
 return {
   { -- Autoformat
     'stevearc/conform.nvim',
-    event = { 'BufWritePre' },
+    event = { 'BufWritePre', 'BufNewFile' },
     cmd = { 'ConformInfo' },
     keys = {
       {
@@ -38,6 +38,18 @@ return {
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        php = { 'php-cs-fixer' },
+      },
+      formatters = {
+        ['php-cs-fixer'] = {
+          command = 'php-cs-fixer',
+          args = {
+            'fix',
+            '--rules=@PSR12', -- Formatting preset. Other presets are available, see the php-cs-fixer docs.
+            '$FILENAME',
+          },
+          stdin = false,
+        },
       },
     },
   },
