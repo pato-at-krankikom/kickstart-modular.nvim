@@ -2,6 +2,23 @@ return {
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
+      --
+      -- Move texts and lines around
+      --
+      -- require('mini.move').setup()
+      require('mini.move').setup {
+        mappings = {
+          left = '<C-h>',
+          right = '<C-l>',
+          down = '<C-j>',
+          up = '<C-k>',
+          -- Move current line
+          line_left = '<C-h>',
+          line_right = '<C-l>',
+          line_down = '<C-j>',
+          line_up = '<C-k>',
+        },
+      }
       -- Better Around/Inside textobjects
       --
       -- Examples:
