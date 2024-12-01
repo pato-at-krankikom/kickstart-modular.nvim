@@ -1,40 +1,47 @@
 return {
   'yetone/avante.nvim',
   event = 'VeryLazy',
-  build = 'make',
+  lazy = false,
+  version = false, -- set this if you want to always pull the latest change
   opts = {
-    provider = 'claude',
-    claude = {
-      endpoint = os.getenv 'AVANTE_ANTHROPIC_ENDPOINT' or 'https://api.anthropic.com',
-      model = 'claude-3-5-sonnet-20240620',
-      timeout = 30000, -- Timeout in milliseconds
-      temperature = 0,
-      max_tokens = 4096,
-      ['local'] = false,
+    provider = 'ollama',
+    use_absolute_path = true,
+    vendors = {
+      ---@type AvanteProvider
+      ollama = {
+        -- ['local'] = true,
+        api_key_name = '',
+        endpoint = 'http://localhost:11434/v1',
+        -- model = "codellama:7b-instruct",
+        model = 'qwen2.5-coder:7b-base-q8_0',
+        parse_curl_args = function(opts, code_opts)
+          return {
+            url = opts.endpoint .. '/chat/completions',
+            headers = {
+              ['Accept'] = 'application/json',
+              ['Content-Type'] = 'application/json',
+              ['x-api-key'] = 'ollama',
+            },
+            body = {
+              model = opts.model,
+              -- messages = require('avante.providers').copilot.parse_message(code_opts), -- you can make your own message, but this is very advanced
+              messages = code_opts.messages or {},
+              max_tokens = 2048,
+              stream = true,
+            },
+          }
+        end,
+        parse_response_data = function(data_stream, event_state, opts)
+          require('avante.providers').openai.parse_response(data_stream, event_state, opts)
+        end,
+      },
     },
-    openai = {
-      endpoint = os.getenv 'AVANTE_OPENAI_ENDPOINT' or 'https://api.openai.com/v1', -- Set the correct endpoint for chat completions
-      -- model = 'gpt-4', -- Use GPT-4 model
-      model = 'gpt-3.5-turbo', -- Use GPT-4 model:  gpt-4
-      timeout = 30000, -- Timeout in milliseconds
-      temperature = 0, -- Adjust the creativity level of responses
-      max_tokens = 4096, -- Maximum number of tokens in the response
-      ['local'] = false, -- Set to false if you want to use the OpenAI API
-    },
-    -- huggingface = {
-    --   endpoint = os.getenv 'AVANTE_OPENAI_ENDPOINT' or 'https://api-inference.huggingface.co/models/codellama-7b-hf', -- Set the correct endpoint for chat completions
-    --   model = 'codellama-7b-hf', -- Use GPT-4 model:  gpt-4
-    --   timeout = 30000, -- Timeout in milliseconds
-    --   temperature = 0, -- Adjust the creativity level of responses
-    --   max_tokens = 4096, -- Maximum number of tokens in the response
-    --   ['local'] = false, -- Set to false if you want to use the OpenAI API
-    -- },
     behaviour = {
       auto_suggestions = false, -- Experimental stage
       auto_set_highlight_group = true,
       auto_set_keymaps = true,
       auto_apply_diff_after_generation = false,
-      support_paste_from_clipboard = false,
+      support_paste_from_clipboard = true,
     },
     mappings = {
       --- @class AvanteConflictMappings
@@ -62,8 +69,8 @@ return {
         insert = '<C-s>',
       },
       sidebar = {
-        switch_windows = '<Tab>',
-        reverse_switch_windows = '<S-Tab>',
+        apply_all = '<leader>-A',
+        apply_cursor = 'a',
       },
     },
     hints = { enabled = true },
@@ -91,10 +98,65 @@ return {
       list_opener = 'copen',
     },
   },
+  -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  build = 'make BUILD_FROM_SOURCE=true',
+  -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
   dependencies = {
-    'nvim-tree/nvim-web-devicons',
+    'nvim-treesitter/nvim-treesitter',
     'stevearc/dressing.nvim',
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
+    --- The below dependencies are optional,
+    'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+    {
+      -- support for image pasting
+      'HakonHarnes/img-clip.nvim',
+      event = 'VeryLazy',
+      opts = {
+        -- recommended settings
+        default = {
+          embed_image_as_base64 = false,
+          prompt_for_file_name = false,
+          drag_and_drop = {
+            insert_mode = true,
+          },
+          -- required for Windows users
+          use_absolute_path = true,
+        },
+      },
+    },
+    {
+      -- Make sure to set this up properly if you have lazy=true
+      'MeanderingProgrammer/render-markdown.nvim',
+      opts = {
+        file_types = { 'markdown', 'Avante' },
+      },
+      ft = { 'markdown', 'Avante' },
+    },
+  },
+  keys = {
+    {
+      '<leader>aa',
+      function()
+        require('avante.api').ask()
+      end,
+      desc = 'avante: ask',
+      mode = { 'n', 'v' },
+    },
+    {
+      '<leader>ar',
+      function()
+        require('avante.api').refresh()
+      end,
+      desc = 'avante: refresh',
+    },
+    {
+      '<leader>ae',
+      function()
+        require('avante.api').edit()
+      end,
+      desc = 'avante: edit',
+      mode = 'v',
+    },
   },
 }
